@@ -5,7 +5,7 @@ let verifyUserLoggedIn=(req,res,next)=>{
     jwt.verify(token,process.env.SECRET_KEY,(err,decoded)=>{
         if(!err){
             req.decoded=decoded;
-            console.log(req)
+            // console.log(req)
             next();
         }
         else{
@@ -14,8 +14,8 @@ let verifyUserLoggedIn=(req,res,next)=>{
     })
 }
 
-let checkEmploye=(req,res,next)=>{
-    if(req.decoded.role=='employee'){
+let checkRole=(req,res,next)=>{
+    if(req.decoded.role=='touragent'){
         next()
     }else{
         res.status(403).send({"Message":"You are not admin"})
@@ -24,5 +24,5 @@ let checkEmploye=(req,res,next)=>{
 
 module.exports={
     verifyUserLoggedIn,
-    checkEmploye
+    checkRole
 }

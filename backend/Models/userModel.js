@@ -19,15 +19,16 @@ const userSchema=mongoose.Schema({
     },
     role:{
         type:String,
-        default:"admin"
+        required:true
     },
-    pics:
+    email:
     {
-        type:[String]
+        type:String,
+        required:true
     }
 },
 {timestamps:true}
 )
 
 
-module.exports=mongoose.model("User",userSchema)
+module.exports=mongoose.model("AppUsers",userSchema)

@@ -7,7 +7,7 @@ const jwt=require("jsonwebtoken");
 
 
 
-userRouter.get('/signup',signup)
+userRouter.post('/signup',signup)
 userRouter.post('/login',login)
 
 

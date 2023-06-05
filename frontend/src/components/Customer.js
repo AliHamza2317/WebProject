@@ -2,12 +2,12 @@
 import React from "react";
 
 
-function Home()
+function Customer()
 {
     return(
     <>
        <div>
-        <h1>  Home Page</h1>
+        <h1>  Customer Page</h1>
         </div>
     </>
     )

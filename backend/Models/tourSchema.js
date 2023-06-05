@@ -18,6 +18,12 @@ const tourSchema=mongoose.Schema({
         type: String,
         required: true
       },
+      image: [
+        {
+          type: String,
+          default: ''
+        }
+      ],
       price: {
         type: Number,
         required: true

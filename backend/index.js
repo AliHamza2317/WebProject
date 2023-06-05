@@ -10,6 +10,7 @@ const cors = require("cors");
 app.use(cors())
 app.use(express.json())
 const mongoose = require("mongoose"); 
+app.use('/public', express.static(__dirname + '/public'));
 mongoose.connect(process.env.MONGO_URL).then(()=>{
     console.log("Connected")
 }).catch(err=>{
