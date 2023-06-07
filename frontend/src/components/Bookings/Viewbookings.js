@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import "./style2.css"
+import { Link } from 'react-router-dom';
 
 
 const ViewBooking = () => {
@@ -36,13 +37,15 @@ const ViewBooking = () => {
               <div className="fifth"><label> Contact Number:</label>{element.customer_phone}</div>
               <div className="seventh"><label> Total Price:</label>{element.totalprice}</div>
               <div className="sixth"><label> Payment Status:</label>{element.paymentstatus}</div>
+              <Link to={"/checkout"}>
               <button
                 type="button"
                 className="btn"
-                
+
               >
                Payment
               </button>
+              </Link>
             </div>
           ))}
         </div>
