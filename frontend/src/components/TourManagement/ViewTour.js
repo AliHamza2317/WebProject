@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { Link } from "react-router-dom";
 import Home from "./Home";
 import Trip from "./Trip";
 import Footer from "../Footer";
@@ -12,7 +12,7 @@ function ViewTour() {
   let token = localStorage.getItem("token");
   useEffect(() => {
     axios
-      .get("http://localhost:3000/tour/view", {
+      .get("http://localhost:3001/tour/view", {
         headers: {
           token: token,
         },
@@ -39,7 +39,9 @@ function ViewTour() {
             <React.Fragment key={item.tour_id}>
               <h2>{item.destination}</h2>
               <p>{item.description}</p>
-              <button id="btnn" > Bookings</button>
+              <Link to={`/booking/${item.tour_id}`}>
+              <button id="btnn">Bookings</button>
+            </Link>
             </React.Fragment>
          
         </div>

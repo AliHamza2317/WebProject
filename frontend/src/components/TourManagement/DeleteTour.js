@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import Navbar from './Navbar';
 import Footer from '../Footer';
@@ -14,7 +14,7 @@ const DeleteTourForm = () => {
   const handleDelete = () => {
     let token = localStorage.getItem('token');
     axios
-      .delete(`http://localhost:3000/tour/delete/${tourId}`, {
+      .delete(`http://localhost:3001/tour/delete/${tourId}`, {
         headers: {
           token: token,
         },

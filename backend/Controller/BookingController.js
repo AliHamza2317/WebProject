@@ -1,48 +1,108 @@
-const tour=require("../Models/tourSchema")
-const Booking=require("../Models/bookingSchema")
-const Customer=require("../Models/customerSchema")
-const Payment=require("../Models/paymentSchema")
+const Tour = require("../Models/tourSchema");
+const Booking = require("../Models/bookingSchema");
+const User = require("../Models/userModel");
+const Payment = require("../Models/paymentSchema");
 const nodemailer = require('nodemailer');
 
-
-
 const booking = async (req, res) => {
-    try {
-      const newBooking = await Booking.create(req.body);
-      const tours = await tour.findOne({ tour_id: newBooking.tour_id });
-  
-      if (!tours) {
-        res.status(404).json({ error: 'Tour not found' });
-        return;
-      }
-  
-      const customer = await Customer.findOne({ customer_id: req.body.customer_id });
-  
-      if (!customer) {
-        res.status(404).json({ error: 'Customer not found' });
-        return;
-      }
-      
-      customer.bookings.push({
-        booking_id: newBooking.booking_id,
-        tour_name: tours.tour_name,
-        departure_date: tours.departure_date,
-        number_of_people: newBooking.numberOfpeople,
-        total_price: newBooking.totalprice,
-        booking_date: newBooking.booking_date
-      });
-  
-      await customer.save();
-  
-      res.status(201).json({ message: 'Tour booked successfully', booking: newBooking });
-  
-    } catch (error) {
-        console.log(error)
-      res.status(400).json({ error: 'Failed to book the tour' });
+  try {
+    const { id } = req.params; // Access the tour_id from req.params and assign it to the variable id
+    const tour_id = Number(id); // Convert the id to a number
+
+    const newBooking = await Booking.create({ ...req.body, tour_id });
+
+    const tour = await Tour.findOne({ tour_id });
+    if (!tour) {
+      res.status(404).json({ error: 'Tour not found' });
+      return;
     }
-  };
+
+    const user = await User.findOne({ _id: req.body.user_id });
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    if (user.role !== 'customer') {
+      res.status(400).json({ error: 'Only customers can make bookings' });
+      return;
+    }
+
+    user.bookings.push({
+      booking_id: newBooking.booking_id,
+      tour_name: tour.tour_name,
+      departure_date: tour.departure_date,
+      number_of_people: newBooking.numberOfpeople,
+      booking_date: newBooking.booking_date
+    });
+
+    await user.save();
+
+    res.status(201).json({ message: 'Tour booked successfully', booking: newBooking });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: 'Failed to book the tour' });
+  }
+};
 
 
 
+const viewbookings=async(req,res)=>{
+  try {
+  
+    const book = await Booking.find();
 
-  module.exports=booking;
+    res.send(book);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+  
+}
+
+
+const deleteBooking = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+
+    // Find the booking by ID and remove it
+    const deletedBooking = await Booking.findOneAndRemove({ booking_id: bookingId });
+
+    if (!deletedBooking) {
+      res.status(404).json({ error: 'Booking not found' });
+      return;
+    }
+
+    // Find the user by their associated booking and update their bookings array
+    const user = await User.findOneAndUpdate(
+      { 'bookings.booking_id': bookingId },
+      { $pull: { bookings: { booking_id: bookingId } } },
+      { new: true }
+    );
+
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.status(200).json({ message: 'Booking deleted successfully' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Failed to delete the booking' });
+  }
+};
+
+module.exports = {
+  booking,
+  viewbookings,
+  deleteBooking
+};
+
+
+
+  module.exports=
+  {
+    booking,
+    viewbookings,
+    deleteBooking
+  }

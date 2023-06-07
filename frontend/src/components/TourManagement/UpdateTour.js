@@ -31,7 +31,7 @@ function UpdateTour() {
     formData.append("duration_days", durationdays);
     let token=localStorage.getItem('token')
     axios
-      .put("http://localhost:3000/tour/update", formData, {
+      .put("http://localhost:3001/tour/update", formData, {
         headers: {
            'token':token
         }

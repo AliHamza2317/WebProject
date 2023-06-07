@@ -25,7 +25,15 @@ const userSchema=mongoose.Schema({
     {
         type:String,
         required:true
-    }
+    },
+    bookings: [{
+        booking_id: Number,
+        tour_name: String,
+        departure_date: Date,
+        number_of_people: Number,
+        total_price: Number,
+        booking_date: Date
+      }],
 },
 {timestamps:true}
 )

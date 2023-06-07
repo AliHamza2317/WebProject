@@ -11,7 +11,7 @@ function Trip()
   let token = localStorage.getItem("token");
   useEffect(() => {
     axios
-      .get("http://localhost:3000/tour/view", {
+      .get("http://localhost:3001/tour/view", {
         headers: {
           token: token,
         },

@@ -14,16 +14,15 @@ function AddTour() {
   const [price, setprice] = useState("");
   const [departuredate, setdeparturedate] = useState("");
   const [durationdays, setdurationdays] = useState("");
-  const [image, setImage] = useState(null);
-
+  const [images, setImages] = useState([]);
 
   const handleImageUpload = (e) => {
-    setImage(e.target.files[0]);
+    const files = Array.from(e.target.files);
+    setImages(files);
   };
 
   const Add = () => {
     const formData = new FormData();
-    formData.append("image", image);
     formData.append("tour_id", tourid);
     formData.append("tour_name", tourname);
     formData.append("description", description);
@@ -31,9 +30,15 @@ function AddTour() {
     formData.append("price", price);
     formData.append("departure_date", departuredate);
     formData.append("duration_days", durationdays);
+
+    images.forEach((img) => {
+      formData.append("image", img);
+    });
+
+
     let token=localStorage.getItem('token')
     axios
-      .post("http://localhost:3000/tour/add", formData, {
+      .post("http://localhost:3001/tour/add", formData, {
         headers: {
            'token':token
         }
@@ -138,6 +143,7 @@ function AddTour() {
                     <input
                       type="file"
                       className="form-control form-control-lg"
+                      multiple
                       onChange={handleImageUpload}
                     />
                   </div>

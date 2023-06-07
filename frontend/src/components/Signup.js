@@ -16,7 +16,7 @@ function Signup()
 
     const signup = () => {
         axios
-          .post("http://localhost:3000/user/signup", {
+          .post("http://localhost:3001/user/signup", {
             name: fullname,
             username: username,
             email: email,

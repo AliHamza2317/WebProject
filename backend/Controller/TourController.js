@@ -96,24 +96,7 @@ const viewtour=async(req,res)=>{
     
   }
 
-  const viewtourbyid=async(req,res)=>{
-
-    const tour_id=req.params.id;
-
-    const tours = await tour.findOne({tour_id:tour_id}).then(found=>{
-
-      if(!found)
-      {
-        res.json({message:"tour id not exist "})
-      }
-      else
-      {
-        res.json({ message:"tour id found",tour:found})
-        
-      }
-    }
-      )
-  }
+  
 
 
   const deletetour = (req, res) => {
@@ -223,8 +206,8 @@ module.exports={
     addtour,
     viewtour,
     deletetour,
-    updateTour,
-    viewtourbyid
+    updateTour
+   
 }
 
 

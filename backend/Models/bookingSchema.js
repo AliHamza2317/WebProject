@@ -10,8 +10,9 @@ const bookingSchema=mongoose.Schema({
         type: Number,
         required: true
       },
-      customer_id: {
-        type: Number,
+      user_id: {
+        type: mongoose.Schema.Types.ObjectId,  // Assuming user_id is stored as ObjectId in the UserSchema
+        ref: 'User',  // Reference the User model
         required: true
       },
       customer_name: {
@@ -27,10 +28,6 @@ const bookingSchema=mongoose.Schema({
         required: true
       },
       numberOfpeople: {
-        type: Number,
-        required: true
-      },
-      totalprice: {
         type: Number,
         required: true
       },

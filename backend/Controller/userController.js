@@ -1,23 +1,57 @@
 
 const User=require("../Models/userModel")
 const jwt=require("jsonwebtoken");
-const signup= (req,res)=>{
-   let {username,password,name,role,email}=req.body;
-   let user=new User({
-    username,
-    password,
-    name,
-    role,
-    email
-   })
-   user.save().then((user)=>{
-    {
-        res.status(200).json({status:"SUCCESS", message: "User Successfully Created", user: user });
-    }
-   }).catch(err=>{
-    res.status(400).json({ err: err, message: "User Not Created" });
-   })
-}
+// Assuming you have a signup route or function
+
+const signup = (req, res) => {
+  // Extract the necessary user information from the request body
+  const { name, username, email, password, role } = req.body;
+
+  // Check if the role is "customer"
+  if (role === "customer") {
+    // Create a new user document with the bookings array initialized as an empty array
+    const newUser = new User({
+      name,
+      username,
+      email,
+      password,
+      role,
+      bookings: []
+    });
+
+    // Save the user to the database
+    newUser.save()
+      .then(() => {
+        // Handle successful signup
+        res.status(200).json({ message: "Signup successful" });
+      })
+      .catch((error) => {
+        // Handle error
+        res.status(500).json({ error: "Error occurred during signup" });
+      });
+  } else {
+    // Create a new user document without the bookings array
+    const newUser = new User({
+      name,
+      username,
+      email,
+      password,
+      role
+    });
+
+    // Save the user to the database
+    newUser.save()
+      .then(() => {
+        // Handle successful signup
+        res.status(200).json({ message: "Signup successful" });
+      })
+      .catch((error) => {
+        // Handle error
+        res.status(500).json({ error: "Error occurred during signup" });
+      });
+  }
+};
+
 
 
 const login = (req, res) => {
@@ -32,6 +66,8 @@ const login = (req, res) => {
             let token = jwt.sign(
               {
                 id: foundUser._id,
+                username:foundUser.username,
+                email:foundUser.email,
                 role: foundUser.role,
               },
               process.env.SECRET_KEY,

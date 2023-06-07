@@ -18,11 +18,22 @@ let checkRole=(req,res,next)=>{
     if(req.decoded.role=='touragent'){
         next()
     }else{
-        res.status(403).send({"Message":"You are not admin"})
+        res.status(403).send({"Message":"You are not Touragent"})
     }
 }
 
+
+let checkCust=(req,res,next)=>{
+    if(req.decoded.role=='customer'){
+        next()
+    }else{
+        res.status(403).send({"Message":"You are not Customer"})
+    }
+}
+
+
 module.exports={
     verifyUserLoggedIn,
-    checkRole
+    checkRole,
+    checkCust
 }

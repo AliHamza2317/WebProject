@@ -14,7 +14,7 @@ function Login() {
     const isEmail = username.includes("@");
   
     axios
-      .post("http://localhost:3000/user/login", {
+      .post("http://localhost:3001/user/login", {
         [isEmail ? "email" : "username"]: username,
         password,
       })
@@ -34,7 +34,14 @@ function Login() {
           if (role === "touragent") {
             console.log("Navigating to homescreen");
             navigate("/viewtour");
-          } else {
+          }
+
+          else if (role === "customer") {
+            console.log("Navigating to homescreen");
+            navigate("/viewtour");
+          }
+          
+          else {
             console.log("Navigating to customerscreen");
             navigate("/customer");
           }
