@@ -1,8 +1,9 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import axios from "axios"
 import React, { useState } from 'react'
-import "../index.css"
-
+import "./payment.css"
+import { useParams } from "react-router-dom"
+import jwt_decode from "jwt-decode"; 
 const CARD_OPTIONS = {
 	iconStyle: "solid",
 	style: {
@@ -24,39 +25,49 @@ const CARD_OPTIONS = {
 }
 
 export default function PaymentForm() {
+    const { bookingId } = useParams();  
     const [success, setSuccess ] = useState(false)
     const stripe = useStripe()
     const elements = useElements()
 
-
+    let token=localStorage.getItem('token')
+    const decodedToken = jwt_decode(token);
+    const user_id=decodedToken.id;
+    console.log(user_id)
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        const {error, paymentMethod} = await stripe.createPaymentMethod({
-            type: "card",
-            card: elements.getElement(CardElement)
-        })
-
-
-    if(!error) {
-        try {
-            const {id} = paymentMethod
-            const response = await axios.post("http://localhost:3001/payment", {
+        e.preventDefault();
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
+          type: "card",
+          card: elements.getElement(CardElement),
+        });
+    
+        if (!error) {
+          try {
+            const { id } = paymentMethod;
+            const response = await axios.post(
+              `http://localhost:3001/payment/addpayment/${bookingId}`,
+              {
+                id,
+                user_id: user_id,
                 amount: 1000,
-                id
-            })
-
-            if(response.data.success) {
-                console.log("Successful payment")
-                setSuccess(true)
+                payment_method: "card",
+                transaction_id: id,
+                status: "paid",
+              }
+            );
+    
+            if (response.status === 201) {
+              console.log("Successful payment");
+              setSuccess(true);
             }
-
-        } catch (error) {
-            console.log("Error", error)
+          } catch (error) {
+            console.log("Error", error.response.data.error);
+          }
+        } else {
+          console.log(error.message);
         }
-    } else {
-        console.log(error.message)
-    }
-}
+      };
+      
 
     return (
         <>

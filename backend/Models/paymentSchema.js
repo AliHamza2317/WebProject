@@ -7,9 +7,10 @@ const paymentSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    customer_id:{
-        type: Number,
-        required: true
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,  // Assuming user_id is stored as ObjectId in the UserSchema
+      ref: 'User',  // Reference the User model
+      required: true
     },
     amount: {
       type: Number,

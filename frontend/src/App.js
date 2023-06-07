@@ -30,7 +30,7 @@ function App() {
           <Route path="/booking/:id" element={<AddBooking/>}  />
           <Route path="/viewbookings" element={<ViewBooking/>}  />
           <Route path="/bookings" element={<CancelBooking/>}  />
-          <Route path='/checkout' element={<StripeContainer/>} />
+          <Route path='/checkout/:bookingId' element={<StripeContainer/>} />
         </Routes>
       </BrowserRouter>
 

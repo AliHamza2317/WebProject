@@ -3,51 +3,68 @@ const Booking=require("../Models/bookingSchema")
 const Customer=require("../Models/customerSchema")
 const Payment=require("../Models/paymentSchema")
 const nodemailer = require('nodemailer');
+const User = require("../Models/userModel");
 
 
 
 
+const stripe = require('stripe')('sk_test_51N5keOESFgqQlsyzUyepxrlBjulvqwPcMbWvWtfvvPVqvwRG6JZ2q18fUpNFHiV1WfJ24cOUmz6Gbb9C5aSyy44O000prjxjFi');
 
 const addPayment = async (req, res) => {
-    try {
-      const { booking_id,customer_id, amount, payment_method, transaction_id, status } = req.body;
-  
-      // Create a new payment object
-      const payment = new Payment({
-        booking_id,
-        customer_id,
-        amount,
-        payment_method,
-        transaction_id,
-        status
-      });
-  
-      // Save the payment to the database
-      const savedPayment = await payment.save();
-  
-      const booking = await Booking.findOne({ booking_id: req.body.booking_id });
-  
-      if (!booking) {
-        res.status(404).json({ error: 'Booking not found' });
-        return;
-      }
-      const cust = await Customer.findOne({ customer_id: req.body.customer_id });
-  
-      if (!cust) {
-        res.status(404).json({ error: 'Customer not found' });
-        return;
-      }
+  try {
+    const booking_id=req.params.bookingId
+    const { id, user_id, amount, payment_method, transaction_id, status } = req.body;
 
-      await Booking.updateOne({ booking_id: booking_id }, { $set: { paymentstatus: 'paid' } });
+    // Create a new payment object
+    const payment = new Payment({
+      booking_id,
+      amount,
+      user_id,
+      payment_method,
+      transaction_id,
+      status
+    });
 
+    // Save the payment to the database
+    const savedPayment = await payment.save();
 
-      res.status(201).json({ message: 'Payment added successfully', payment: savedPayment });
-      await sendPaymentConfirmationEmail(cust.customer_email, payment);
-    } catch (error) {
-      console.error('Error adding payment:', error);
-      res.status(500).json({ error: 'Failed to add payment' });
+    const booking = await Booking.findOne({ booking_id: booking_id });
+
+    if (!booking) {
+      res.status(404).json({ error: 'Booking not found' });
+      return;
     }
-  };
+
+    const cust = await User.findOne({ _id: req.body.user_id });
+
+    if (!cust) {
+      res.status(404).json({ error: 'Customer not found' });
+      return;
+    }
+
+    await Booking.updateOne({ booking_id: booking_id }, { $set: { paymentstatus: 'paid' } });
+
+    // Charge the payment using Stripe
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount * 100, // Stripe requires the amount in cents
+      currency: 'usd',
+      payment_method: id,
+      confirmation_method: 'manual',
+      confirm: true
+    });
+
+    // Check if the payment was successful
+    if (paymentIntent.status === 'succeeded') {
+      res.status(201).json({ message: 'Payment added and processed successfully', payment: savedPayment });
+      await sendPaymentConfirmationEmail(cust.email, payment);
+    } else {
+      res.status(500).json({ error: 'Payment processing failed' });
+    }
+  } catch (error) {
+    console.error('Error adding payment:', error);
+    res.status(500).json({ error: 'Failed to add payment' });
+  }
+};
 
 
   const viewPayments = async (req, res) => {
@@ -93,6 +110,11 @@ const addPayment = async (req, res) => {
     // Send the email
     await transporter.sendMail(mailOptions);
   };
+
+
+  
+
+
 
   module.exports={
     addPayment,

@@ -10,7 +10,7 @@ const paymentRouter=require("express").Router();
 
 
 
-paymentRouter.post("/addpayment",addPayment)
+paymentRouter.post("/addpayment/:bookingId",addPayment)
 paymentRouter.get("/viewpayments",viewPayments)
 
 
