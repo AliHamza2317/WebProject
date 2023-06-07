@@ -6,8 +6,8 @@ const { booking,viewbookings, deleteBooking } = require("../Controller/BookingCo
 
 
 
-tourRouter.post("/bookings/:id",checkCust,verifyUserLoggedIn,booking)
-tourRouter.get("/viewbookings",checkRole,verifyUserLoggedIn,viewbookings)
-tourRouter.delete('/booking/:bookingId',checkRole,verifyUserLoggedIn, deleteBooking);
+tourRouter.post("/bookings/:id",verifyUserLoggedIn,checkCust,booking)
+tourRouter.get("/viewbookings",verifyUserLoggedIn ,viewbookings)
+tourRouter.delete('/booking/:bookingId',verifyUserLoggedIn,checkRole, deleteBooking);
 module.exports=tourRouter
 

@@ -3,7 +3,7 @@ import axios from 'axios';
 import "./style2.css"
 
 
-const ViewBooking = () => {
+const CancelBooking = () => {
   const [data, setData] = useState([]);
   const token = localStorage.getItem('token');
 
@@ -22,6 +22,35 @@ const ViewBooking = () => {
         console.log(err);
       });
   }, []); // Include 'token' as a dependency to re-fetch data when token changes
+const cancelBooking = (bookingId) => {
+  axios
+    .delete(`http://localhost:3001/tour/booking/${bookingId}`, {
+      headers: {
+        token: token,
+      },
+    })
+    .then(function (response) {
+      console.log(response);
+      alert("Booking is Cancelled Successfully");
+
+      axios
+        .get('http://localhost:3001/tour/viewbookings', {
+          headers: {
+            token: token,
+          },
+        })
+        .then(function (response) {
+          console.log(response);
+          setData(response.data);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+};
 
 
   return (
@@ -36,12 +65,13 @@ const ViewBooking = () => {
               <div className="fifth"><label> Contact Number:</label>{element.customer_phone}</div>
               <div className="seventh"><label> Total Price:</label>{element.totalprice}</div>
               <div className="sixth"><label> Payment Status:</label>{element.paymentstatus}</div>
+              
               <button
                 type="button"
                 className="btn"
-                
+                onClick={() => cancelBooking(element.booking_id)}
               >
-               Payment
+                Cancel Booking
               </button>
             </div>
           ))}
@@ -51,4 +81,4 @@ const ViewBooking = () => {
   );
 };
 
-export default ViewBooking;
+export default CancelBooking;

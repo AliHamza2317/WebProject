@@ -63,6 +63,7 @@ const login = (req, res) => {
           res.status(400).send({ "Message": "User Not Found" });
         } else {
           if (password === foundUser.password) {
+            console.log(foundUser.role)
             let token = jwt.sign(
               {
                 id: foundUser._id,

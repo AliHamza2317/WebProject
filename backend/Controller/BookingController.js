@@ -6,8 +6,8 @@ const nodemailer = require('nodemailer');
 
 const booking = async (req, res) => {
   try {
-    const { id } = req.params; // Access the tour_id from req.params and assign it to the variable id
-    const tour_id = Number(id); // Convert the id to a number
+    const { id } = req.params;
+    const tour_id = Number(id);
 
     const newBooking = await Booking.create({ ...req.body, tour_id });
 
@@ -28,15 +28,23 @@ const booking = async (req, res) => {
       return;
     }
 
+    const numberOfPeople = newBooking.numberOfpeople;
+    const totalPrice = tour.price * numberOfPeople;
+
     user.bookings.push({
       booking_id: newBooking.booking_id,
       tour_name: tour.tour_name,
       departure_date: tour.departure_date,
-      number_of_people: newBooking.numberOfpeople,
+      number_of_people: numberOfPeople,
+      total_price: totalPrice,
       booking_date: newBooking.booking_date
     });
 
     await user.save();
+
+    // Update the total price in the created booking
+    newBooking.totalprice = totalPrice;
+    await newBooking.save();
 
     res.status(201).json({ message: 'Tour booked successfully', booking: newBooking });
   } catch (error) {
@@ -44,6 +52,7 @@ const booking = async (req, res) => {
     res.status(400).json({ error: 'Failed to book the tour' });
   }
 };
+
 
 
 

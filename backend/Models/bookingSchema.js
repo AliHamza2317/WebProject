@@ -31,6 +31,10 @@ const bookingSchema=mongoose.Schema({
         type: Number,
         required: true
       },
+      totalprice:{
+        type: Number,
+        default:0
+      },
       paymentstatus: {
         type: String,
         default:"Pending"

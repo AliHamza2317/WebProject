@@ -1,39 +1,37 @@
-const jwt=require("jsonwebtoken");
-let verifyUserLoggedIn=(req,res,next)=>{
-    let token=req.headers['token'];
+const jwt = require("jsonwebtoken");
 
-    jwt.verify(token,process.env.SECRET_KEY,(err,decoded)=>{
-        if(!err){
-            req.decoded=decoded;
-            // console.log(req)
-            next();
-        }
-        else{
-            res.send(401).send({"Message":"You are Not Authorized"})
-        }
-    })
-}
+let verifyUserLoggedIn = (req, res, next) => {
+  let token = req.headers['token'];
 
-let checkRole=(req,res,next)=>{
-    if(req.decoded.role=='touragent'){
-        next()
-    }else{
-        res.status(403).send({"Message":"You are not Touragent"})
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    if (!err) {
+      req.decoded = decoded;
+      next();
+    } else {
+      res.status(401).send({ "Message": "You are Not Authorized" });
     }
-}
+  });
+};
+
+let checkRole = (req, res, next) => {
+  if (req.decoded.role === 'touragent') {
+    next();
+  } else {
+    res.status(403).send({ "Message": "You are not a Tour Agent" });
+  }
+};
 
 
-let checkCust=(req,res,next)=>{
-    if(req.decoded.role=='customer'){
-        next()
-    }else{
-        res.status(403).send({"Message":"You are not Customer"})
+let checkCust = (req, res, next) => {
+    if (req.decoded.role === 'customer') {
+      next();
+    } else {
+      res.status(403).json({ "Message": "You are not a Customer" });
     }
-}
+  };
 
-
-module.exports={
-    verifyUserLoggedIn,
-    checkRole,
-    checkCust
-}
+module.exports = {
+  verifyUserLoggedIn,
+  checkRole,
+  checkCust
+};

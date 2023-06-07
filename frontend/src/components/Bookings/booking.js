@@ -52,6 +52,7 @@ function AddBooking() {
       })
       .catch(function (err) {
         console.log(err);
+        alert("You are not a Customer");
       });
   };
   

@@ -10,6 +10,7 @@ import UpdateTour from './components/TourManagement/UpdateTour';
 import DeleteTourForm from './components/TourManagement/DeleteTour';
 import AddBooking from './components/Bookings/booking';
 import ViewBooking from './components/Bookings/Viewbookings';
+import CancelBooking from './components/Bookings/CancelBooking';
 function App() {
   return (
   <>
@@ -25,7 +26,8 @@ function App() {
           <Route path="/updatetour" element={<UpdateTour/>}  />
           <Route path="/deletetour" element={<DeleteTourForm/>}  />
           <Route path="/booking/:id" element={<AddBooking/>}  />
-          <Route path="/viewbooking" element={<ViewBooking/>}  />
+          <Route path="/viewbookings" element={<ViewBooking/>}  />
+          <Route path="/bookings" element={<CancelBooking/>}  />
         </Routes>
       </BrowserRouter>
 
