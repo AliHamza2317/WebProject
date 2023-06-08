@@ -11,7 +11,7 @@ const Navbar = () => {
   const role=decodedToken.role
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate("/login");
+    navigate("/");
   };
 
   return (

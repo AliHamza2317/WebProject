@@ -57,42 +57,59 @@ function Login() {
 
   return(
     <>
-<section className="vh-100" >
-  <div className="container py-5 h-100">
-    <div className="row d-flex justify-content-center align-items-center h-100">
-      <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div className="card shadow-2-strong" id="card">
-          <div className="card-body p-5 text-center">
+<section class="vh-100">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" >
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-            <h3 className="mb-5">Sign in</h3>
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Login</p>
 
-            <div className="form-outline mb-4">
-              <input type="text" id="username" className="form-control form-control-lg" value={username} placeholder="Email or Username" onChange={(e)=> setUsername(e.target.value)} />
-              
+                <form class="mx-1 mx-md-4">
+
+                  
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <input type="text" id="form3Example3c" class="form-control" value={username} onChange={(e)=>setUsername(e.target.value)} />
+                      <label class="form-label" for="form3Example3c" >Your Email or Username</label>
+                    </div>
+                  </div>
+
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <input type="password" id="form3Example4c" class="form-control" value={password} onChange={(e)=>setPassword(e.target.value)} />
+                      <label class="form-label" for="form3Example4c">Password</label>
+                    </div>
+                  </div>
+
+                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button type="button" class="btn btn-primary btn-lg" onClick={checkLogin}>Login</button>
+                  </div>
+
+                </form>
+
+              </div>
+              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                  class="img-fluid" alt="Sample image"/>
+
+              </div>
             </div>
-
-            <div className="form-outline mb-4">
-              <input type="text" id="password" className="form-control form-control-lg" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
-              
-            </div>
-
-          
-            <div className="form-check d-flex justify-content-start mb-4">
-              <input className="form-check-input" type="checkbox" value="" id="form1Example3" />
-              <label className="form-check-label" > Remember password </label>
-            </div>
-
-            <button className="btn btn-primary btn-lg btn-block" type="submit" onClick={checkLogin} >Login</button>
-
-            <hr className="my-4"/>
-
-
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 
 
     </>

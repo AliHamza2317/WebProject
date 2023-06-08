@@ -56,18 +56,23 @@ const booking = async (req, res) => {
 
 
 
-const viewbookings=async(req,res)=>{
-  try {
-  
-    const book = await Booking.find();
 
-    res.send(book);
+const viewbookings = async (req, res) => {
+  try {
+    const user_id = req.params.user_id; // Retrieve user_id from request parameters
+
+    const bookings = await Booking.find({ user_id });
+
+    res.json(bookings);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
-  
-}
+};
+
+
+
+
 
 
 const deleteBooking = async (req, res) => {
