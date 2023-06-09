@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 let verifyUserLoggedIn = (req, res, next) => {
   let token = req.headers['token'];
 
-  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+  jwt.verify(token, "ilovecoding", (err, decoded) => {
     if (!err) {
       req.decoded = decoded;
       next();

@@ -71,7 +71,7 @@ const login = (req, res) => {
                 email:foundUser.email,
                 role: foundUser.role,
               },
-              process.env.SECRET_KEY,
+              "ilovecoding",
               {
                 expiresIn: '24h',
               }

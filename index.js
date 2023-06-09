@@ -19,14 +19,15 @@ app.use(cors())
 app.use(express.json())
 const mongoose = require("mongoose"); 
 app.use('/public', express.static(__dirname + '/public'));
-mongoose.connect(process.env.MONGO_URL).then(()=>{
+mongoose.connect("mongodb+srv://hamza:123@cluster0.btxgzbp.mongodb.net/Project?retryWrites=true&w=majority").then(()=>{
     console.log("Connected")
 }).catch(err=>{
    console.log(err) 
 }) 
 
-app.listen(process.env.PORT || 3001,()=>{
-    console.log(`App listening on port ${process.env.PORT}`)
+port=3001
+app.listen(port,()=>{
+    console.log('App listening on port'+port)
 })
 
 app.use("/user",uRoutes); 
