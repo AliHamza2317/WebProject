@@ -71,6 +71,20 @@ const viewbookings = async (req, res) => {
 };
 
 
+const allbookings = async (req, res) => {
+  try {
+    // Retrieve user_id from request parameters
+
+    const bookings = await Booking.find();
+
+    res.json(bookings);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
 
 
 
@@ -109,14 +123,8 @@ const deleteBooking = async (req, res) => {
 module.exports = {
   booking,
   viewbookings,
-  deleteBooking
+  deleteBooking,
+  allbookings
 };
 
 
-
-  module.exports=
-  {
-    booking,
-    viewbookings,
-    deleteBooking
-  }

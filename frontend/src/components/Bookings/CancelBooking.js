@@ -9,7 +9,7 @@ const CancelBooking = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3001/tour/viewbookings', {
+      .get('http://localhost:3001/tour/viewbooking', {
         headers: {
           token: token,
         },
@@ -22,6 +22,8 @@ const CancelBooking = () => {
         console.log(err);
       });
   }, []); // Include 'token' as a dependency to re-fetch data when token changes
+
+
 const cancelBooking = (bookingId) => {
   axios
     .delete(`http://localhost:3001/tour/booking/${bookingId}`, {
@@ -34,7 +36,7 @@ const cancelBooking = (bookingId) => {
       alert("Booking is Cancelled Successfully");
 
       axios
-        .get('http://localhost:3001/tour/viewbookings', {
+        .get('http://localhost:3001/tour/viewbooking', {
           headers: {
             token: token,
           },

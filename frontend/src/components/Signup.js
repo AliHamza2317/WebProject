@@ -71,7 +71,7 @@ function Signup()
                     <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
                       <input type="text" id="form3Example1c" class="form-control" value={username} onChange={(e)=>setUsername(e.target.value)} />
-                      <label class="form-label" for="form3Example1c" >Your Name</label>
+                      <label class="form-label" for="form3Example1c" >Your UserName</label>
                     </div>
                   </div>
 
@@ -87,7 +87,7 @@ function Signup()
                     <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
                       <input type="text" id="form3Example1c" class="form-control" value={role} onChange={(e)=>setRole(e.target.value)} />
-                      <label class="form-label" for="form3Example1c" >Your Name</label>
+                      <label class="form-label" for="form3Example1c" >Your Role</label>
                     </div>
                   </div>
 
